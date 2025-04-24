@@ -16,7 +16,6 @@ import { BinaryNode, getBinaryNodeChild, getBinaryNodeChildBuffer, jidNormalized
 import { aesDecryptGCM, aesEncryptGCM, hkdf } from './crypto'
 import { generateMessageID } from './generics'
 import { ILogger } from './logger'
-import { AUTO, MIME_JPEG, read, RESIZE_BILINEAR } from 'jimp'
 
 const getTmpFilesDirectory = () => tmpdir()
 
@@ -112,13 +111,15 @@ export const extractImageThumb = async(bufferOrFilePath: Readable | Buffer | str
 				height: dimensions.height,
 			},
 		}
-	} else if ('jimp' in lib) {
-		const image = await read(bufferOrFilePath as string)
+	} else if('jimp' in lib && typeof lib.jimp?.read === 'function') {
+		const { read, MIME_JPEG, RESIZE_BILINEAR, AUTO } = lib.jimp
+
+		const jimp = await read(bufferOrFilePath as string)
 		const dimensions = {
-			width: image.getWidth(),
-			height: image.getHeight()
+			width: jimp.getWidth(),
+			height: jimp.getHeight()
 		}
-		const buffer = await image
+		const buffer = await jimp
 			.quality(50)
 			.resize(width, AUTO, RESIZE_BILINEAR)
 			.getBufferAsync(MIME_JPEG)
@@ -126,8 +127,7 @@ export const extractImageThumb = async(bufferOrFilePath: Readable | Buffer | str
 			buffer,
 			original: dimensions
 		}
-	}
-	 else {
+	} else {
 		throw new Boom('No image processing library available')
 	}
 }
