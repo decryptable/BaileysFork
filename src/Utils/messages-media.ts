@@ -111,15 +111,17 @@ export const extractImageThumb = async(bufferOrFilePath: Readable | Buffer | str
 				height: dimensions.height,
 			},
 		}
-	} else if('jimp' in lib && typeof lib.jimp?.read === 'function') {
-		const { read, MIME_JPEG, RESIZE_BILINEAR, AUTO } = lib.jimp
-
-		const jimp = await read(bufferOrFilePath as string)
+	} else if ('jimp' in lib) {
+		const jimp = lib.jimp as typeof import('jimp')
+	
+		const { read, MIME_JPEG, RESIZE_BILINEAR, AUTO } = jimp
+	
+		const image = await read(bufferOrFilePath as string)
 		const dimensions = {
-			width: jimp.getWidth(),
-			height: jimp.getHeight()
+			width: image.getWidth(),
+			height: image.getHeight()
 		}
-		const buffer = await jimp
+		const buffer = await image
 			.quality(50)
 			.resize(width, AUTO, RESIZE_BILINEAR)
 			.getBufferAsync(MIME_JPEG)
@@ -127,7 +129,8 @@ export const extractImageThumb = async(bufferOrFilePath: Readable | Buffer | str
 			buffer,
 			original: dimensions
 		}
-	} else {
+	}
+	 else {
 		throw new Boom('No image processing library available')
 	}
 }
