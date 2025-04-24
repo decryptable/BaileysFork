@@ -16,6 +16,7 @@ import { BinaryNode, getBinaryNodeChild, getBinaryNodeChildBuffer, jidNormalized
 import { aesDecryptGCM, aesEncryptGCM, hkdf } from './crypto'
 import { generateMessageID } from './generics'
 import { ILogger } from './logger'
+import { AUTO, MIME_JPEG, read, RESIZE_BILINEAR } from 'jimp'
 
 const getTmpFilesDirectory = () => tmpdir()
 
@@ -112,10 +113,6 @@ export const extractImageThumb = async(bufferOrFilePath: Readable | Buffer | str
 			},
 		}
 	} else if ('jimp' in lib) {
-		const jimp = lib.jimp as typeof import('jimp')
-	
-		const { read, MIME_JPEG, RESIZE_BILINEAR, AUTO } = jimp
-	
 		const image = await read(bufferOrFilePath as string)
 		const dimensions = {
 			width: image.getWidth(),
