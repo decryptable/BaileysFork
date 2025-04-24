@@ -16,11 +16,13 @@ import {
 	MessageGenerationOptionsFromContent,
 	MessageType,
 	MessageUserReceipt,
+	WAAlbumMessage,
 	WAMediaUpload,
 	WAMessage,
 	WAMessageContent,
 	WAMessageStatus,
 	WAProto,
+	WAStickerPackMessage,
 	WATextMessage,
 } from '../Types'
 import { isJidGroup, isJidStatusBroadcast, jidNormalizedUser } from '../WABinary'
@@ -505,7 +507,12 @@ export const generateWAMessageContent = async(
 		}
 	} else if('requestPhoneNumber' in message) {
 		m.requestPhoneNumberMessage = {}
-	} else {
+	} else if ('videoAlbum' in message) {
+		m.albumMessage = WAProto.Message.AlbumMessage.fromObject(message.videoAlbum as WAAlbumMessage)
+	} else if ('stickerPack' in message) {
+		m.stickerPackMessage = WAProto.Message.StickerPackMessage.fromObject(message.stickerPack as WAStickerPackMessage)
+	}
+	else {
 		m = await prepareWAMessageMedia(
 			message,
 			options
