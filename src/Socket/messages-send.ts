@@ -620,6 +620,12 @@ export const makeMessagesSocket = (config: SocketConfig) => {
 			return 'native_flow_response'
 		} else if(message.groupInviteMessage) {
 			return 'url'
+		} else if(message.stickerPackMessage) {
+			return 'sticker_pack'
+		} else if (message.lottieStickerMessage) {
+			return 'lottie_sticker'
+		} else if (message.albumMessage) {
+			return 'album'
 		}
 	}
 
