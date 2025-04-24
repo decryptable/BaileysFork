@@ -17,7 +17,7 @@ export type WAMessageKey = proto.IMessageKey
 export type WATextMessage = proto.Message.IExtendedTextMessage
 export type WAContextInfo = proto.IContextInfo
 export type WALocationMessage = proto.Message.ILocationMessage
-export type WAGenericMediaMessage = proto.Message.IVideoMessage | proto.Message.IImageMessage | proto.Message.IAudioMessage | proto.Message.IDocumentMessage | proto.Message.IStickerMessage | proto.Message.IStickerPackMessage | proto.Message.IAlbumMessage
+export type WAGenericMediaMessage = proto.Message.IVideoMessage | proto.Message.IImageMessage | proto.Message.IAudioMessage | proto.Message.IDocumentMessage | proto.Message.IStickerMessage | proto.Message.IStickerPackMessage
 export const WAMessageStubType = proto.WebMessageInfo.StubType
 export const WAMessageStatus = proto.WebMessageInfo.Status
 import { ILogger } from '../Utils/logger'
